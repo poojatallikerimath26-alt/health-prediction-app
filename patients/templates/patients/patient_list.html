@@ -1,0 +1,46 @@
+{% extends "patients/base.html" %}
+{% block title %}Patient Records{% endblock %}
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3 class="mb-0">Patient Records</h3>
+    <a href="{% url 'patient_create' %}" class="btn btn-primary">+ Add Patient</a>
+  </div>
+
+  {% if records %}
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover bg-white align-middle">
+        <thead class="table-dark">
+          <tr>
+            <th>Full Name</th>
+            <th>Date of Birth</th>
+            <th>Email</th>
+            <th>Glucose</th>
+            <th>Haemoglobin</th>
+            <th>Cholesterol</th>
+            <th>Remarks (AI)</th>
+            <th style="width: 140px;">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for record in records %}
+            <tr>
+              <td>{{ record.full_name }}</td>
+              <td>{{ record.date_of_birth }}</td>
+              <td>{{ record.email }}</td>
+              <td>{{ record.glucose }}</td>
+              <td>{{ record.haemoglobin }}</td>
+              <td>{{ record.cholesterol }}</td>
+              <td><small>{{ record.remarks }}</small></td>
+              <td>
+                <a href="{% url 'patient_update' record.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>
+                <a href="{% url 'patient_delete' record.pk %}" class="btn btn-sm btn-outline-danger">Delete</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p class="text-muted">No patient records yet. Click "Add Patient" to create one.</p>
+  {% endif %}
+{% endblock %}

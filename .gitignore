@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+env/
+.venv/
+
+# Django
+db.sqlite3
+*.log
+media/
+
+# Environment / secrets
+.env
+
+# Trained ML models (regenerate with: python patients/ml/train_model.py)
+patients/ml/models/*.pkl
+
+# Editor/OS
+.vscode/
+.idea/
+.DS_Store
