@@ -22,8 +22,6 @@ class PatientRecord(models.Model):
     date_of_birth = models.DateField(validators=[validate_not_future_date])
     email = models.EmailField()
 
-    # Realistic clinical ranges are enforced with validators so junk values
-    # (negative numbers, absurdly large numbers) are rejected up front.
     glucose = models.FloatField(
         help_text="mg/dL",
         validators=[MinValueValidator(1), MaxValueValidator(1000)],
@@ -44,6 +42,12 @@ class PatientRecord(models.Model):
 
     class Meta:
         ordering = ["-updated_at"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["full_name", "date_of_birth", "email"],
+                name="unique_patient_record",
+            )
+        ]
 
     def __str__(self):
         return f"{self.full_name} ({self.date_of_birth})"

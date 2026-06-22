@@ -44,3 +44,18 @@ class PatientRecordForm(forms.ModelForm):
         if value <= 0:
             raise forms.ValidationError("Cholesterol must be a positive number.")
         return value
+
+    def clean(self):
+        cleaned_data = super().clean()
+        full_name = cleaned_data.get("full_name")
+        dob = cleaned_data.get("date_of_birth")
+        email = cleaned_data.get("email")
+
+        if full_name and dob and email:
+            if PatientRecord.objects.filter(
+                full_name=full_name, date_of_birth=dob, email=email
+            ).exists():
+                raise forms.ValidationError(
+                    "A record with this name, date of birth, and email already exists."
+                )
+        return cleaned_data
